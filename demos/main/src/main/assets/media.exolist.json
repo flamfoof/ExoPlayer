@@ -4,15 +4,19 @@
 		"samples": [
 			{
 				"name": "dish 2.1",
-				"uri": "http://192.168.1.143:5004/auto/v2.2"
+				"uri": "http://192.168.1.143:5004/auto/v2.2?transcode=mobile&duration=10"
 			},
       {
         "name": "using udp",
         "uri": "udp://127.0.0.1:5000"
       },
       {
-        "name": "using udp2",
-        "uri": "udp://127.0.0.1:5000"
+        "name": "Getting the 3 second mpeg link from drive",
+        "uri": "https://drive.google.com/file/d/1aCsV0fTi5oV6waLe8LM4Cdigu1sxKrun/view?usp=sharing"
+      },
+      {
+        "name": "Getting the 20 second mpeg link from drive",
+        "uri": "https://drive.google.com/file/d/1HdZbWAWP6tHJMucQzpR8vjO-vDx10H3M/view?usp=sharing"
       }
 		]
 	},
