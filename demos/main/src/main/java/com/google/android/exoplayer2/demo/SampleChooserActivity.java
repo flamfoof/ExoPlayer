@@ -102,6 +102,7 @@ public class SampleChooserActivity extends AppCompatActivity
         for (String asset : assetManager.list("")) {
           if (asset.endsWith(".exolist.json")) {
             uriList.add("asset:///" + asset);
+
           }
         }
       } catch (IOException e) {
@@ -184,6 +185,7 @@ public class SampleChooserActivity extends AppCompatActivity
 
     for (int i = 0; i < uris.length; i++) {
       Uri uri = Uri.parse(uris[i]);
+      Log.d("PlayVid: ", "URIs: " + uris[i]);
       if (Util.maybeRequestReadExternalStoragePermission(this, uri)) {
         return;
       }
@@ -228,12 +230,18 @@ public class SampleChooserActivity extends AppCompatActivity
         IntentUtil.PREFER_EXTENSION_DECODERS_EXTRA,
         isNonNullAndChecked(preferExtensionDecodersMenuItem));
     IntentUtil.addToIntent(playlistHolder.mediaItems, intent);
+    for(int i = 0; i < playlistHolder.mediaItems.size(); i++)
+    {
+      Log.d("PlayVid: ", "playlist: " + playlistHolder.title + " with intent: " + intent.toURI());
+    }
+
     startActivity(intent);
     return true;
   }
 
   private void onSampleDownloadButtonClicked(PlaylistHolder playlistHolder) {
     int downloadUnsupportedStringId = getDownloadUnsupportedStringId(playlistHolder);
+    Log.d("PlayVid: ", "downloaded: " + playlistHolder.title);
     if (downloadUnsupportedStringId != 0) {
       Toast.makeText(getApplicationContext(), downloadUnsupportedStringId, Toast.LENGTH_LONG)
           .show();
@@ -282,7 +290,7 @@ public class SampleChooserActivity extends AppCompatActivity
         try {
           readPlaylistGroups(new JsonReader(new InputStreamReader(inputStream, "UTF-8")), result);
         } catch (Exception e) {
-          Log.e(TAG, "Error loading sample list: " + uri, e);
+          Log.e("PlayVid", "Error loading sample list: " + uri, e);
           sawError = true;
         } finally {
           DataSourceUtil.closeQuietly(dataSource);
@@ -367,6 +375,7 @@ public class SampleChooserActivity extends AppCompatActivity
             break;
           case "extension":
             extension = reader.nextString();
+            Log.d("PlayVid", "Extension: " + extension);
             break;
           case "clip_start_position_ms":
             clippingConfiguration.setStartPositionMs(reader.nextLong());
@@ -437,6 +446,16 @@ public class SampleChooserActivity extends AppCompatActivity
         @Nullable
         String adaptiveMimeType =
             Util.getAdaptiveMimeTypeForContentType(Util.inferContentType(uri, extension));
+        Log.d("PlayVid", "URI: " + uri);
+        if(uri.getScheme()=="http://169.254.173.46:5004/auto/v2.2")
+        {
+          Log.d("PlayVid", "force set this");
+          adaptiveMimeType="application/x-mpegURL";
+        } else{
+          Log.d("PlayVidx", "Not force set this: " + uri.getPath());
+          adaptiveMimeType="application/x-mpegURL";
+        }
+        Log.d("PlayVid", "Adaptive Extension: " + adaptiveMimeType);
         mediaItem
             .setUri(uri)
             .setMediaMetadata(new MediaMetadata.Builder().setTitle(title).build())
@@ -577,6 +596,7 @@ public class SampleChooserActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+      Log.d("PlayVid", "Clicked: ");
       onSampleDownloadButtonClicked((PlaylistHolder) view.getTag());
     }
 

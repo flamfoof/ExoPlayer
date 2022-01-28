@@ -44,7 +44,7 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitia
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.offline.DownloadRequest;
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
-import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MediaSourceFactory;
 import com.google.android.exoplayer2.source.ads.AdsLoader;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.StyledPlayerControlView;
@@ -234,7 +234,7 @@ public class PlayerActivity extends AppCompatActivity
     }
   }
 
-  // StyledPlayerControlView.VisibilityListener implementation
+  // PlayerControlView.VisibilityListener implementation
 
   @Override
   public void onVisibilityChange(int visibility) {
@@ -261,7 +261,7 @@ public class PlayerActivity extends AppCompatActivity
           intent.getBooleanExtra(IntentUtil.PREFER_EXTENSION_DECODERS_EXTRA, false);
       RenderersFactory renderersFactory =
           DemoUtil.buildRenderersFactory(/* context= */ this, preferExtensionDecoders);
-      MediaSource.Factory mediaSourceFactory =
+      MediaSourceFactory mediaSourceFactory =
           new DefaultMediaSourceFactory(dataSourceFactory)
               .setAdsLoaderProvider(this::getAdsLoader)
               .setAdViewProvider(playerView);
@@ -441,12 +441,10 @@ public class PlayerActivity extends AppCompatActivity
       if (tracksInfo == lastSeenTracksInfo) {
         return;
       }
-      if (!tracksInfo.isTypeSupportedOrEmpty(
-          C.TRACK_TYPE_VIDEO, /* allowExceedsCapabilities= */ true)) {
+      if (!tracksInfo.isTypeSupportedOrEmpty(C.TRACK_TYPE_VIDEO)) {
         showToast(R.string.error_unsupported_video);
       }
-      if (!tracksInfo.isTypeSupportedOrEmpty(
-          C.TRACK_TYPE_AUDIO, /* allowExceedsCapabilities= */ true)) {
+      if (!tracksInfo.isTypeSupportedOrEmpty(C.TRACK_TYPE_AUDIO)) {
         showToast(R.string.error_unsupported_audio);
       }
       lastSeenTracksInfo = tracksInfo;

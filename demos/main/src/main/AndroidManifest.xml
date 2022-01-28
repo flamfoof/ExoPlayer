@@ -24,6 +24,7 @@
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
+
   <uses-feature android:name="android.software.leanback" android:required="false"/>
   <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
   <uses-sdk/>
@@ -36,7 +37,8 @@
       android:allowBackup="false"
       android:requestLegacyExternalStorage="true"
       android:name="androidx.multidex.MultiDexApplication"
-      tools:targetApi="29">
+      tools:targetApi="29"
+      android:usesCleartextTraffic="true">
 
     <activity android:name=".SampleChooserActivity"
         android:configChanges="keyboardHidden"
